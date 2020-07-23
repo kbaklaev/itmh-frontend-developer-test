@@ -1,24 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios'
 
-function App() {
+import Selector from './components/selector/selector'
+import Program from './components/program/program'
+
+const groupUrl = 'http://192.168.0.7:3001/group'
+
+const App = () => {
+  const [groups, setGroups] = useState([])
+  const [programs, setPrograms] = useState([])
+
+  useEffect(() => {
+    axios
+      .get(groupUrl)
+      .then(data => setGroups(data.data))
+      .catch(err => {throw err})
+  }, [])
+
+  const getSelectedGroup = async (group) => {
+    await axios
+      .get(`http://192.168.0.7:3001/group/${group}/channel?withProgram`)
+      .then(data => setPrograms(data.data))
+      .catch(err => {throw err})
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container mt-4">
+      <Selector groups={groups} getSelectedGroup={getSelectedGroup} />
+      <Program programs={programs} />
     </div>
   );
 }
