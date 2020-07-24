@@ -4,7 +4,7 @@ import axios from 'axios'
 import Selector from './components/selector/selector'
 import Program from './components/program/program'
 
-const groupUrl = 'http://192.168.0.7:3001/group'
+const groupUrl = 'http://192.168.0.7:3001/group/'
 
 const App = () => {
   const [groups, setGroups] = useState([])
@@ -19,7 +19,7 @@ const App = () => {
 
   const getSelectedGroup = async (group) => {
     await axios
-      .get(`http://192.168.0.7:3001/group/${group}/channel?withProgram`)
+      .get(`${groupUrl}${group}/channel`)
       .then(data => setPrograms(data.data))
       .catch(err => {throw err})
   }
@@ -27,9 +27,13 @@ const App = () => {
   return (
     <div className="container mt-4">
       <Selector groups={groups} getSelectedGroup={getSelectedGroup} />
-      <Program programs={programs} />
+      {
+        programs.map(program => (
+          <Program key={program.id} program={program} />
+        ))
+      }
     </div>
   );
 }
 
-export default App;
+export default App

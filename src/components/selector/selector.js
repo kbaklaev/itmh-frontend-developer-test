@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react'
 import { Form } from 'react-bootstrap'
 
 const Selector = ({ groups, getSelectedGroup }) => {
-  const [selectedGroup, setSelectedGroup] = useState(null) 
+  const [selectedGroup, setSelectedGroup] = useState(null)
 
   useEffect(() => {
     getSelectedGroup(selectedGroup)
-  }, [getSelectedGroup, selectedGroup])
+  }, [selectedGroup, getSelectedGroup])
 
   return (
     <Form>
