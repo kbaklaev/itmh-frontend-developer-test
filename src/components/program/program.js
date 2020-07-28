@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { Container, Row, Col, ProgressBar } from "react-bootstrap";
+import Loader from "../loader/loader";
+
+import './program.css'
 
 const URL = "http://192.168.0.7:3001";
 
@@ -18,18 +21,17 @@ const Program = ({ program }) => {
   }, [program.id]);
 
   useEffect(() => {
-    fetch();
-  }, [fetch, program.id]);
+    !program.id
+      ? fetch()
+      : setTimeout(() => {
+          new Date().getTime() <
+          new Date(currentProgram.endTime).getTime() + 1000
+            ? setCurrentPosition(new Date().getTime())
+            : fetch();
+        }, 500);
+  }, [currentPosition, currentProgram.endTime, fetch, program.id]);
 
-  useEffect(() => {
-    setTimeout(() => {
-      new Date().getTime() < new Date(currentProgram.endTime).getTime() + 500
-        ? setCurrentPosition(new Date().getTime())
-        : fetch();
-    }, 500);
-  }, [currentPosition, currentProgram.endTime, fetch]);
-
-  return (
+  return currentPosition ? (
     <Container className="mb-4">
       <Row key={program.id}>
         <Col sm={4}>
@@ -41,14 +43,22 @@ const Program = ({ program }) => {
           &nbsp;
           {currentProgram.name}
           <br />
-          <ProgressBar
-            min={new Date(currentProgram.startTime).getTime()}
-            max={new Date(currentProgram.endTime).getTime()}
-            now={currentPosition}
-          />
+          <div className="progress-bar mt-2">
+            <ProgressBar
+              min={new Date(currentProgram.startTime).getTime()}
+              max={new Date(currentProgram.endTime).getTime()}
+              now={currentPosition}
+            />
+          </div>
         </Col>
       </Row>
     </Container>
+  ) : (
+    <div className="loader__container">
+      <div className="loader__position">
+        <Loader />
+      </div>
+    </div>
   );
 };
 

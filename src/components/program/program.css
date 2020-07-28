@@ -1,0 +1,7 @@
+.progress-bar {
+  height: 5px;
+}
+.progress-bar :first-child {
+  border: 0px;
+  border-radius: 0rem;
+}
