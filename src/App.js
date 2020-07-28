@@ -33,16 +33,19 @@ const App = () => {
       });
   };
 
-  return groups.length ? (
-    <div className="container mt-4">
-      <PureSelector groups={groups} getSelectedGroup={getSelectedGroup} />
+  return groups.length > 100 ? (
+    <div className="container mx-auto p-4 bg-gray-200">
+      <PureSelector
+        groups={groups}
+        getSelectedGroup={getSelectedGroup}
+      />
       {programs.map((program) => (
         <Program key={program.id} program={program} />
       ))}
     </div>
   ) : (
-    <div className="loader__container">
-      <div className="loader__position">
+    <div className="flex h-full">
+      <div className="inline-flex m-auto">
         <Loader />
       </div>
     </div>

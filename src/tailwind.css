@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* 
+div {
+  border: 2px;
+  border-color: red;
+  border-style: solid;
+} */
